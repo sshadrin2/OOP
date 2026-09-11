@@ -12,5 +12,8 @@ class SortTest {
         var result = Sort.sort(array);
         assertArrayEquals(new int[]{1, 2, 3}, result);
 
+        array = new int[]{5, 4, 3, 2, 1};
+        result = Sort.sort(array);
+        assertArrayEquals(new int[]{1, 2, 3, 4, 5}, result);
     }
 }
