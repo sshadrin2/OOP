@@ -1,30 +1,21 @@
-package ru.nsu.sshadrin2.Task_1_1_1;
-
-import org.junit.jupiter.api.Test;
+package ru.nsu.sshadrin2.heapsort;
 
 import java.util.Arrays;
 import java.util.Random;
+
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class SortTest {
 
-//    @Test
-//    void sort() {
-//        int[] array = new int[]{1, 3, 2};
-//        var result = Sort.sort(array);
-//        assertArrayEquals(new int[]{1, 2, 3}, result);
-//
-//        array = new int[]{5, 4, 3, 2, 1};
-//        result = Sort.sort(array);
-//        assertArrayEquals(new int[]{1, 2, 3, 4, 5}, result);
-//    }
     @Test
     void emptyArray() {
         int[] array = {};
         var result = Sort.sort(array);
         assertArrayEquals(new int[]{}, result);
     }
+
     @Test
     void singleElementArray() {
         int[] array = {10};
@@ -38,12 +29,14 @@ class SortTest {
         var result = Sort.sort(array);
         assertArrayEquals(new int[]{1, 2, 3, 4, 5}, result);
     }
+
     @Test
     void minMaxValuesArray() {
         int[] array = {Integer.MAX_VALUE, Integer.MIN_VALUE, 0};
         var result = Sort.sort(array);
         assertArrayEquals(new int[]{Integer.MIN_VALUE, 0, Integer.MAX_VALUE}, result);
     }
+
     @Test
     void randomArray() {
         Random rnd = new Random(44);
