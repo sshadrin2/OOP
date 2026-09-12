@@ -1,10 +1,9 @@
 package ru.nsu.sshadrin2.heapsort;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 import java.util.Arrays;
 import java.util.Random;
-
 import org.junit.jupiter.api.Test;
 
 class SortTest {
