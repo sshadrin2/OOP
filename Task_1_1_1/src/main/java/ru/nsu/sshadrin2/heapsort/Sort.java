@@ -1,12 +1,13 @@
 package ru.nsu.sshadrin2.heapsort;
 
 /**
- * Heap sort for integer arrays
+ * Heap sort for integer arrays.
  */
 public class Sort {
 
     /**
-     * Sorts an integer array using heap sort
+     * Sorts an integer array using heap sort.
+     *
      * @param array sortable array
      * @return sorted array
      */

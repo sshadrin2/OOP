@@ -1,7 +1,7 @@
 package ru.nsu.sshadrin2.heapsort;
 
 /**
- * Binary heap with integer values
+ * Binary heap with integer values.
  */
 public class HeapInt {
     private int[] heap;
@@ -9,7 +9,8 @@ public class HeapInt {
     private int cap;
 
     /**
-     * Constructs binary heap with a constant capacity
+     * Constructs binary heap with a constant capacity.
+     *
      * @param cap heap capacity
      */
     public HeapInt(int cap) {
@@ -56,7 +57,8 @@ public class HeapInt {
     }
 
     /**
-     * Inserts an integer into a heap
+     * Inserts an integer into a heap.
+     *
      * @param value insertable value
      */
     public void insert(int value) {
@@ -65,7 +67,8 @@ public class HeapInt {
     }
 
     /**
-     * Extracts min element from the heap
+     * Extracts min element from the heap.
+     *
      * @return min element
      */
     public int extract() {
