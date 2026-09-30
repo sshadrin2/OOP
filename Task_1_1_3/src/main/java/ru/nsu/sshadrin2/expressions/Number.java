@@ -20,7 +20,6 @@ public class Number extends Expression {
 
     @Override
     public Expression derivative(String var) {
-        Expression de = new Number(0);
-        return de;
+        return new Number(0);
     }
 }
