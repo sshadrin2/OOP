@@ -1,7 +1,6 @@
 package ru.nsu.sshadrin2.expressions;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +8,7 @@ class ParserTest {
 
     private static final float EPS = 1e-6f;
 
-    // ---------- Простые атомы ----------
+    // Atoms
 
     @Test
     void parseNumber() {
@@ -35,7 +34,7 @@ class ParserTest {
         assertEquals(3.0f, e.eval("my_var2 = 3"), EPS);
     }
 
-    // ---------- Операции в скобках ----------
+    // Simple operations
 
     @Test
     void parseAdd() {
@@ -61,10 +60,10 @@ class ParserTest {
         assertEquals(5.0f, e.eval(""), EPS);
     }
 
-    // ---------- Вложенные выражения ----------
+    // Nested operations
 
     @Test
-    void parseNestedFromPdf() {
+    void parseNested() {
         // (3+(2*x)) при x=10 → 23
         Expression e = Parser.parse("(3+(2*x))");
         assertEquals(23.0f, e.eval("x = 10; y = 13"), EPS);
@@ -90,7 +89,7 @@ class ParserTest {
         assertEquals(0.25f, e.eval(""), EPS);
     }
 
-    // ---------- Пробелы ----------
+    // Blank spaces
 
     @Test
     void parseWithSpaces() {
@@ -110,7 +109,7 @@ class ParserTest {
         assertEquals(7.0f, e.eval(""), EPS);
     }
 
-    // ---------- Связка с derivative ----------
+    // Derivatives
 
     @Test
     void parsedExpressionCanBeDifferentiated() {
@@ -126,5 +125,4 @@ class ParserTest {
         Expression de = e.derivative("x");
         assertEquals(10.0f, de.eval("x = 5"), EPS);
     }
-
 }
