@@ -4,7 +4,7 @@ package ru.nsu.sshadrin2.expressions;
 /**
  * Addition operation class.
  */
-public class Add extends Operation{
+public class Add extends Operation {
 
     /**
      * Creates addition of two expressions.

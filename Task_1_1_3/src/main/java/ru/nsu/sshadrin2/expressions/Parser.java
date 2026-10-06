@@ -8,26 +8,26 @@ package ru.nsu.sshadrin2.expressions;
  * Each variable or constant must not be surrounded by brackets.
  */
 public class Parser {
-    private final String Input;
+    private final String input;
     private int pos;
 
-    private Parser(String Input) {
-        this.Input = Input;
+    private Parser(String input) {
+        this.input = input;
         this.pos = 0;
     }
 
     /**
      * Parses an arithmetical expression.
      *
-     * @param Input string with arithmetical expression
+     * @param input string with arithmetical expression
      * @return Expression type object
      */
-    public static Expression parse(String Input) {
-        Parser parser = new Parser(Input);
+    public static Expression parse(String input) {
+        Parser parser = new Parser(input);
         Expression expr = parser.parseExpression();
         parser.skipWhitespace();
 
-        if (parser.pos != Input.length()) {
+        if (parser.pos != input.length()) {
             throw new ParseException("Unexpected token at position " + parser.pos);
         }
 
@@ -37,11 +37,11 @@ public class Parser {
     private Expression parseExpression() {
         skipWhitespace();
 
-        if (pos >= Input.length()) {
+        if (pos >= input.length()) {
             throw new ParseException("Unexpected end of input");
         }
 
-        if (Input.charAt(pos) == '(') {
+        if (input.charAt(pos) == '(') {
             pos++; // '('
 
             final Expression left = parseExpression();
@@ -69,32 +69,32 @@ public class Parser {
     private Expression parseAtom() {
         skipWhitespace();
 
-        if (pos >= Input.length()) {
+        if (pos >= input.length()) {
             throw new ParseException("Expected number or variable");
         }
 
-        char c = Input.charAt(pos);
+        char c = input.charAt(pos);
 
         if (Character.isDigit(c)) {
             int start = pos;
 
-            while (pos < Input.length() && Character.isDigit(Input.charAt(pos))) {
+            while (pos < input.length() && Character.isDigit(input.charAt(pos))) {
                 pos++;
             }
 
-            int value = Integer.parseInt(Input.substring(start, pos));
+            int value = Integer.parseInt(input.substring(start, pos));
             return new Number(value);
         }
 
         if (Character.isLetter(c)) {
             int start = pos;
 
-            while (pos < Input.length()
-                    && (Character.isLetterOrDigit(Input.charAt(pos)) || Input.charAt(pos) == '_')) {
+            while (pos < input.length()
+                    && (Character.isLetterOrDigit(input.charAt(pos)) || input.charAt(pos) == '_')) {
                 pos++;
             }
 
-            String name = Input.substring(start, pos);
+            String name = input.substring(start, pos);
             return new Variable(name);
         }
 
@@ -104,11 +104,11 @@ public class Parser {
     private char readOperator() {
         skipWhitespace();
 
-        if (pos >= Input.length()) {
+        if (pos >= input.length()) {
             throw new ParseException("Expected operator");
         }
 
-        char c = Input.charAt(pos);
+        char c = input.charAt(pos);
 
         if (c == '+' || c == '-' || c == '*' || c == '/') {
             pos++;
@@ -121,7 +121,7 @@ public class Parser {
     private void expect(char expected) {
         skipWhitespace();
 
-        if (pos >= Input.length() || Input.charAt(pos) != expected) {
+        if (pos >= input.length() || input.charAt(pos) != expected) {
             throw new ParseException("Expected '" + expected + "' at position " + pos);
         }
 
@@ -129,11 +129,14 @@ public class Parser {
     }
 
     private void skipWhitespace() {
-        while (pos < Input.length() && Character.isWhitespace(Input.charAt(pos))) {
+        while (pos < input.length() && Character.isWhitespace(input.charAt(pos))) {
             pos++;
         }
     }
 
+    /**
+     * Parsing exception class.
+     */
     public static class ParseException extends RuntimeException {
         public ParseException(String message) {
             super(message);
