@@ -2,7 +2,7 @@ package ru.nsu.sshadrin2.expressions;
 
 public class Sub extends Operation {
 
-    Sub(Expression left, Expression right) {
+    public Sub(Expression left, Expression right) {
         super(left, right, '-');
     }
 

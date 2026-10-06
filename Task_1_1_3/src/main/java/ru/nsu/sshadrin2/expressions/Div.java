@@ -2,7 +2,7 @@ package ru.nsu.sshadrin2.expressions;
 
 public class Div extends Operation{
 
-    Div(Expression left, Expression right) {
+    public Div(Expression left, Expression right) {
         super(left, right, '/');
     }
 

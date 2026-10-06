@@ -2,7 +2,7 @@ package ru.nsu.sshadrin2.expressions;
 
 public class Mul extends Operation {
 
-    Mul(Expression left, Expression right) {
+    public Mul(Expression left, Expression right) {
         super(left, right, '*');
     }
 
