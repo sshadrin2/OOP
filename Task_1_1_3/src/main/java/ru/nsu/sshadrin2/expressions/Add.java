@@ -20,6 +20,7 @@ public class Add extends Operation{
     public Expression derivative(String var) {
         Expression deLeft = left.derivative(var);
         Expression deRight = right.derivative(var);
+
         return new Add(deLeft, deRight);
     }
 }

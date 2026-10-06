@@ -18,7 +18,7 @@ public class Variable extends Expression {
 
     @Override
     public float eval(String interpretation) {
-        for (String pair : interpretation.split(";")) {
+        for (String pair : interpretation.split("\\s*;\\s*")) {
             String[] kv = pair.split("\\s*=\\s*", 2);
             if (kv[0].equals(name)) {
                 return Float.parseFloat(kv[1]);

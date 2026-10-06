@@ -2,7 +2,8 @@ package ru.nsu.sshadrin2.expressions;
 
 
 abstract class Operation extends Expression {
-    protected final Expression left, right;
+    protected final Expression left;
+    protected final Expression right;
     protected final char op;
 
     Operation(Expression left, Expression right, char op) {

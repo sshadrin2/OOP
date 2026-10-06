@@ -11,7 +11,7 @@ public class Parser {
     private final String Input;
     private int pos;
 
-    public Parser(String Input) {
+    private Parser(String Input) {
         this.Input = Input;
         this.pos = 0;
     }
@@ -19,8 +19,8 @@ public class Parser {
     /**
      * Parses an arithmetical expression.
      *
-     * @param
-     * @return
+     * @param Input string with arithmetical expression
+     * @return Expression type object
      */
     public static Expression parse(String Input) {
         Parser parser = new Parser(Input);
@@ -44,12 +44,12 @@ public class Parser {
         if (Input.charAt(pos) == '(') {
             pos++; // '('
 
-            Expression left = parseExpression();
+            final Expression left = parseExpression();
             skipWhitespace();
 
             char op = readOperator();
 
-            Expression right = parseExpression();
+            final Expression right = parseExpression();
             skipWhitespace();
 
             expect(')');
