@@ -1,9 +1,17 @@
 package ru.nsu.sshadrin2.expressions;
 
-public class Variable extends Expression{
+/**
+ * Single variable expression.
+ */
+public class Variable extends Expression {
 
     private final String name;
 
+    /**
+     * Creates variable with given name.
+     *
+     * @param name name of a variable.
+     */
     public Variable(String name) {
         this.name = name;
     }

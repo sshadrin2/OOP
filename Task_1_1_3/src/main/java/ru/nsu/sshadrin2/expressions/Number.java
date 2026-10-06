@@ -1,9 +1,17 @@
 package ru.nsu.sshadrin2.expressions;
 
+/**
+ * Constant integer number expression.
+ */
 public class Number extends Expression {
 
     private final int value;
 
+    /**
+     * Creates constant number expression.
+     *
+     * @param value value of a number
+     */
     public Number(int value) {
         this.value = value;
     }

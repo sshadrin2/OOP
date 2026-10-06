@@ -3,14 +3,16 @@ package ru.nsu.sshadrin2.expressions;
 
 /**
  * Public class for mathematical expressions.
- * Supports addition, substraction, multiplication and division with integer constants and variables.
+ * Supports addition, substraction, multiplication and division
+ * with integer constants and variables.
  */
 public abstract class Expression {
 
     /**
      * Evaluates an expression considering given variables interpretation.
      *
-     * @param interpretation an interpretation of all variables in an expression in form of "x = 10, y = 20 etc."
+     * @param interpretation an interpretation of all variables in an expression
+     *                       in form of "x = 10, y = 20 etc."
      *
      * @return the result of evaluation
      */

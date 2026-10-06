@@ -1,20 +1,33 @@
 package ru.nsu.sshadrin2.expressions;
 
+
+/**
+ * Arithmetical expression parser.
+ * Transforms input string into Expression object.
+ * Each binary operation must be surrounded by brackets.
+ * Each variable or constant must not be surrounded by brackets.
+ */
 public class Parser {
-    private final String s;
+    private final String Input;
     private int pos;
 
-    public Parser(String s) {
-        this.s = s;
+    public Parser(String Input) {
+        this.Input = Input;
         this.pos = 0;
     }
 
-    public static Expression parse(String s) {
-        Parser parser = new Parser(s);
+    /**
+     * Parses an arithmetical expression.
+     *
+     * @param
+     * @return
+     */
+    public static Expression parse(String Input) {
+        Parser parser = new Parser(Input);
         Expression expr = parser.parseExpression();
         parser.skipWhitespace();
 
-        if (parser.pos != s.length()) {
+        if (parser.pos != Input.length()) {
             throw new ParseException("Unexpected token at position " + parser.pos);
         }
 
@@ -24,11 +37,11 @@ public class Parser {
     private Expression parseExpression() {
         skipWhitespace();
 
-        if (pos >= s.length()) {
+        if (pos >= Input.length()) {
             throw new ParseException("Unexpected end of input");
         }
 
-        if (s.charAt(pos) == '(') {
+        if (Input.charAt(pos) == '(') {
             pos++; // '('
 
             Expression left = parseExpression();
@@ -56,32 +69,32 @@ public class Parser {
     private Expression parseAtom() {
         skipWhitespace();
 
-        if (pos >= s.length()) {
+        if (pos >= Input.length()) {
             throw new ParseException("Expected number or variable");
         }
 
-        char c = s.charAt(pos);
+        char c = Input.charAt(pos);
 
         if (Character.isDigit(c)) {
             int start = pos;
 
-            while (pos < s.length() && Character.isDigit(s.charAt(pos))) {
+            while (pos < Input.length() && Character.isDigit(Input.charAt(pos))) {
                 pos++;
             }
 
-            int value = Integer.parseInt(s.substring(start, pos));
+            int value = Integer.parseInt(Input.substring(start, pos));
             return new Number(value);
         }
 
         if (Character.isLetter(c)) {
             int start = pos;
 
-            while (pos < s.length()
-                    && (Character.isLetterOrDigit(s.charAt(pos)) || s.charAt(pos) == '_')) {
+            while (pos < Input.length()
+                    && (Character.isLetterOrDigit(Input.charAt(pos)) || Input.charAt(pos) == '_')) {
                 pos++;
             }
 
-            String name = s.substring(start, pos);
+            String name = Input.substring(start, pos);
             return new Variable(name);
         }
 
@@ -91,11 +104,11 @@ public class Parser {
     private char readOperator() {
         skipWhitespace();
 
-        if (pos >= s.length()) {
+        if (pos >= Input.length()) {
             throw new ParseException("Expected operator");
         }
 
-        char c = s.charAt(pos);
+        char c = Input.charAt(pos);
 
         if (c == '+' || c == '-' || c == '*' || c == '/') {
             pos++;
@@ -108,7 +121,7 @@ public class Parser {
     private void expect(char expected) {
         skipWhitespace();
 
-        if (pos >= s.length() || s.charAt(pos) != expected) {
+        if (pos >= Input.length() || Input.charAt(pos) != expected) {
             throw new ParseException("Expected '" + expected + "' at position " + pos);
         }
 
@@ -116,7 +129,7 @@ public class Parser {
     }
 
     private void skipWhitespace() {
-        while (pos < s.length() && Character.isWhitespace(s.charAt(pos))) {
+        while (pos < Input.length() && Character.isWhitespace(Input.charAt(pos))) {
             pos++;
         }
     }

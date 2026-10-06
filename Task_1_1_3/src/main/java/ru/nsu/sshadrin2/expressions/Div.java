@@ -1,7 +1,16 @@
 package ru.nsu.sshadrin2.expressions;
 
-public class Div extends Operation{
+/**
+ * Division operation class.
+ */
+public class Div extends Operation {
 
+    /**
+     * Creates division of two expressions.
+     *
+     * @param left expression in the numerator
+     * @param right expression in the denominator
+     */
     public Div(Expression left, Expression right) {
         super(left, right, '/');
     }
