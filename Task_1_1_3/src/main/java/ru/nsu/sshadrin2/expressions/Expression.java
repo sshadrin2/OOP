@@ -1,6 +1,8 @@
 package ru.nsu.sshadrin2.expressions;
 
 
+import java.util.HashMap;
+
 /**
  * Public class for mathematical expressions.
  * Supports addition, substraction, multiplication and division
@@ -16,7 +18,20 @@ public abstract class Expression {
      *
      * @return the result of evaluation
      */
-    public abstract float eval(String interpretation);
+    public float eval(String interpretation) {
+        HashMap<String, Integer> parsedInterpretation = new HashMap<>();
+
+        for (String pair : interpretation.split("\\s*;\\s*")) {
+            String[] kv = pair.split("\\s*=\\s*", 2);
+            if (kv.length == 2) {
+                parsedInterpretation.put(kv[0], Integer.parseInt(kv[1]));
+            }
+
+        }
+        return eval(parsedInterpretation);
+    }
+
+    protected abstract float eval(HashMap<String, Integer> parsedInterpretation);
 
     /**
      * Prints an expression in the terminal.

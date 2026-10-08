@@ -1,5 +1,7 @@
 package ru.nsu.sshadrin2.expressions;
 
+import java.util.HashMap;
+
 /**
  * Single variable expression.
  */
@@ -17,14 +19,18 @@ public class Variable extends Expression {
     }
 
     @Override
-    public float eval(String interpretation) {
-        for (String pair : interpretation.split("\\s*;\\s*")) {
-            String[] kv = pair.split("\\s*=\\s*", 2);
-            if (kv[0].equals(name)) {
-                return Float.parseFloat(kv[1]);
-            }
+    public float eval(HashMap<String, Integer> interpretation) {
+        if (interpretation.containsKey(name)) {
+            return interpretation.get(name).floatValue();
         }
         return Float.NaN;
+//        for (String pair : interpretation.split("\\s*;\\s*")) {
+//            String[] kv = pair.split("\\s*=\\s*", 2);
+//            if (kv[0].equals(name)) {
+//                return Float.parseFloat(kv[1]);
+//            }
+//        }
+//        return Float.NaN;
     }
 
     @Override

@@ -1,6 +1,8 @@
 package ru.nsu.sshadrin2.expressions;
 
 
+import java.util.HashMap;
+
 abstract class Operation extends Expression {
     protected final Expression left;
     protected final Expression right;
@@ -12,7 +14,7 @@ abstract class Operation extends Expression {
         this.op = op;
     }
 
-    public float eval(String interpretation) {
+    public float eval(HashMap<String, Integer> interpretation) {
         return switch (op) {
             case '+' -> left.eval(interpretation) + right.eval(interpretation);
             case '-' -> left.eval(interpretation) - right.eval(interpretation);

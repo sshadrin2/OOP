@@ -1,5 +1,7 @@
 package ru.nsu.sshadrin2.expressions;
 
+import java.util.HashMap;
+
 /**
  * Constant integer number expression.
  */
@@ -17,7 +19,7 @@ public class Number extends Expression {
     }
 
     @Override
-    public float eval(String interpretation) {
+    public float eval(HashMap<String, Integer> interpretation) {
         return value;
     }
 
