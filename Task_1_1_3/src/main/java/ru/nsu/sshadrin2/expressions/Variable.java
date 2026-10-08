@@ -24,13 +24,6 @@ public class Variable extends Expression {
             return interpretation.get(name).floatValue();
         }
         return Float.NaN;
-//        for (String pair : interpretation.split("\\s*;\\s*")) {
-//            String[] kv = pair.split("\\s*=\\s*", 2);
-//            if (kv[0].equals(name)) {
-//                return Float.parseFloat(kv[1]);
-//            }
-//        }
-//        return Float.NaN;
     }
 
     @Override

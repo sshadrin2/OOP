@@ -47,13 +47,13 @@ public class Parser {
             final Expression left = parseExpression();
             skipWhitespace();
 
-            char op = readOperator();
+            final char op = readOperator();
 
             final Expression right = parseExpression();
             skipWhitespace();
 
             if (pos >= input.length() || input.charAt(pos) != ')') {
-                throw new ParseException("Expected closing bracket",pos);
+                throw new ParseException("Expected closing bracket", pos);
             }
             pos++;
 
@@ -117,7 +117,7 @@ public class Parser {
             return c;
         }
 
-        throw new ParseException("Expected operator",pos);
+        throw new ParseException("Expected operator", pos);
     }
 
     private void skipWhitespace() {
