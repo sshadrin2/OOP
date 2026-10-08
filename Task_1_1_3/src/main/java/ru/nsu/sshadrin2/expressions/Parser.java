@@ -28,7 +28,7 @@ public class Parser {
         parser.skipWhitespace();
 
         if (parser.pos != input.length()) {
-            throw new ParseException("Unexpected token at position " + parser.pos);
+            throw new ParseException("Unexpected token", parser.pos);
         }
 
         return expr;
@@ -42,7 +42,7 @@ public class Parser {
         }
 
         if (input.charAt(pos) == '(') {
-            pos++; // '('
+            pos++;
 
             final Expression left = parseExpression();
             skipWhitespace();
@@ -52,14 +52,17 @@ public class Parser {
             final Expression right = parseExpression();
             skipWhitespace();
 
-            expect(')');
+            if (pos >= input.length() || input.charAt(pos) != ')') {
+                throw new ParseException("Expected closing bracket",pos);
+            }
+            pos++;
 
             return switch (op) {
                 case '+' -> new Add(left, right);
                 case '-' -> new Sub(left, right);
                 case '*' -> new Mul(left, right);
                 case '/' -> new Div(left, right);
-                default -> throw new ParseException("Unknown operator: " + op);
+                default -> throw new ParseException("Unknown operator: " + op, pos);
             };
         }
 
@@ -67,7 +70,6 @@ public class Parser {
     }
 
     private Expression parseAtom() {
-        skipWhitespace();
 
         if (pos >= input.length()) {
             throw new ParseException("Expected number or variable");
@@ -90,7 +92,7 @@ public class Parser {
             int start = pos;
 
             while (pos < input.length()
-                    && (Character.isLetterOrDigit(input.charAt(pos)) || input.charAt(pos) == '_')) {
+                    && Character.isLetterOrDigit(input.charAt(pos))) {
                 pos++;
             }
 
@@ -98,7 +100,7 @@ public class Parser {
             return new Variable(name);
         }
 
-        throw new ParseException("Expected number or variable at position " + pos);
+        throw new ParseException("Expected number or variable", pos);
     }
 
     private char readOperator() {
@@ -115,17 +117,7 @@ public class Parser {
             return c;
         }
 
-        throw new ParseException("Expected operator at position " + pos);
-    }
-
-    private void expect(char expected) {
-        skipWhitespace();
-
-        if (pos >= input.length() || input.charAt(pos) != expected) {
-            throw new ParseException("Expected '" + expected + "' at position " + pos);
-        }
-
-        pos++;
+        throw new ParseException("Expected operator",pos);
     }
 
     private void skipWhitespace() {
@@ -140,6 +132,10 @@ public class Parser {
     public static class ParseException extends RuntimeException {
         public ParseException(String message) {
             super(message);
+        }
+
+        public ParseException(String message, int pos) {
+            super(message + " at position " + pos);
         }
     }
 }

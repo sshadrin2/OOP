@@ -31,9 +31,9 @@ class ParserTest {
         }
 
         @Test
-        void parseVariableWithUnderscoreAndDigits() {
-            Expression e = Parser.parse("my_var2");
-            assertEquals(3.0f, e.eval("my_var2 = 3"), EPS);
+        void parseVariableWithDigits() {
+            Expression e = Parser.parse("myvar123");
+            assertEquals(3.0f, e.eval("myvar123 = 3"), EPS);
         }
     }
 
