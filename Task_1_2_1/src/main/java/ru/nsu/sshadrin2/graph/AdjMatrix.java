@@ -14,7 +14,6 @@ public class AdjMatrix<V> implements Graph<V> {
     private boolean[][] matrix;
     private int size;
 
-
     public AdjMatrix(int cap) {
         this.vertices = new ArrayList<V>();
         indices = new HashMap<>();
@@ -54,7 +53,7 @@ public class AdjMatrix<V> implements Graph<V> {
             throw new IllegalArgumentException("unknown vertex: " + vertex);
         }
         int index = indices.get(vertex);
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < matrix.length; i++) {
             if (matrix[index][i]) {
                 result.add(vertices.get(i));
             }
@@ -111,5 +110,60 @@ public class AdjMatrix<V> implements Graph<V> {
                 addEdge(from, to);
             }
         }
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || obj.getClass() != this.getClass()) {
+            return false;
+        }
+        AdjMatrix<?> other = (AdjMatrix<?>) obj;
+        if (!indices.keySet().equals(other.indices.keySet())) {
+            return false;
+        }
+        for (V from : indices.keySet()) {
+            int indexFrom = indices.get(from);
+            int indexFromOther = other.indices.get(from);
+            for (V to : indices.keySet()) {
+                int indexTo = indices.get(to);
+                int indexToOther = other.indices.get(to);
+                if (matrix[indexFrom][indexTo] != other.matrix[indexFromOther][indexToOther]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("{");
+        boolean firstVertex = true;
+        for (V from : indices.keySet()) {
+            if (!firstVertex) {
+                sb.append(", ");
+            }
+            firstVertex = false;
+            sb.append(from).append("=[");
+            int i = indices.get(from);
+            boolean firstNeighbour = true;
+            for (V to : indices.keySet()) {
+                int j = indices.get(to);
+                if (matrix[i][j]) {
+                    if (!firstNeighbour) {
+                        sb.append(", ");
+                    }
+                    firstNeighbour = false;
+                    sb.append(to);
+                }
+            }
+            sb.append("]");
+        }
+        sb.append("}");
+        return sb.toString();
     }
 }

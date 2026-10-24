@@ -5,6 +5,12 @@ import java.nio.file.Path;
 import java.io.IOException;
 import java.util.function.Function;
 
+import java.util.List;
+/**
+ * An oriented graph interface.
+ *
+ * @param <V> the type of values stored in nodes
+ */
 public interface Graph<V> {
     void addVertex(V vertex);
     void removeVertex(V vertex);
@@ -24,6 +30,9 @@ public interface Graph<V> {
      */
     void readFromFile(Path path, Function<String, V> parser) throws IOException;
 
+    @Override
+    boolean equals(Object obj);
 
-
+    @Override
+    String toString();
 }
