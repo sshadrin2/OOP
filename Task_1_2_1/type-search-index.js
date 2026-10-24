@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"ru.nsu.sshadrin2.graph","l":"AdjMatrix"},{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"ru.nsu.sshadrin2.graph","l":"Graph"}];updateSearchResults();
