@@ -12,5 +12,18 @@ public interface Graph<V> {
 
     void addEdge(V from, V to);
     void removeEdge(V from, V to);
-    void readFromFile(Path path, Function<String, V> Parser) throws IOException;
+
+    /**
+     * Reads graph from a file.
+     * First line must start with a max vertices number.
+     * Next line must be a list of not more than this number of different vertices.
+     * Each subsequent line must be a pair of vertices which represents an oriented edge.
+     *
+     * @param path path to a file
+     * @param parser mapping from String to a vertex class object.
+     */
+    void readFromFile(Path path, Function<String, V> parser) throws IOException;
+
+
+
 }
