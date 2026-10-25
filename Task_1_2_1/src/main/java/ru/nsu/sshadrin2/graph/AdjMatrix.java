@@ -10,6 +10,7 @@ import java.util.function.Function;
 
 /**
  * Adjacency matrix representation for an oriented graph.
+ *
  * @param <V> the type of value stored in nodes.
  */
 public class AdjMatrix<V> implements Graph<V> {
@@ -18,6 +19,12 @@ public class AdjMatrix<V> implements Graph<V> {
     private boolean[][] matrix;
     private int size;
 
+
+    /**
+     * Makes an adjacency matrix.
+     *
+     * @param cap maximum matrix capacity
+     */
     public AdjMatrix(int cap) {
         this.vertices = new ArrayList<V>();
         indices = new HashMap<>();
