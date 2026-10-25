@@ -21,6 +21,7 @@ public class IncMatrix<V> implements Graph<V> {
     private ArrayList<int[]> matrix;
     private int size;
     private int cap;
+
     /**
      * Makes an incidence matrix.
      *
@@ -162,16 +163,19 @@ public class IncMatrix<V> implements Graph<V> {
     }
 
     private record Edge<V>(V from, V to) { }
-
     private Set<Edge<V>> edgeSet() {
         Set<Edge<V>> result = new HashSet<>();
         for (int[] row : matrix) {
-            V from = null, to = null;
+            V from = null;
+            V to = null;
             for (int v = 0; v < size; v++) {
                 switch (row[v]) {
                     case 1 -> from = vertices.get(v);
                     case -1 -> to = vertices.get(v);
-                    case 2 -> { from = vertices.get(v); to = vertices.get(v); }
+                    case 2 ->   {
+                                from = vertices.get(v);
+                                to = vertices.get(v);
+                                }
                     default -> { }
                 }
             }

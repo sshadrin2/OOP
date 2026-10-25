@@ -1,8 +1,8 @@
 package ru.nsu.sshadrin2.graph;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.function.Function;
 
 /**
