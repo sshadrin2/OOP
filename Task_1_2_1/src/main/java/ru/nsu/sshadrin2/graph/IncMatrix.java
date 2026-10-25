@@ -16,6 +16,10 @@ import java.util.function.Function;
  */
 public class IncMatrix<V> implements Graph<V> {
 
+    private static final int OUT = 1;
+    private static final int IN = -1;
+    private static final int LOOP = 2;
+
     private ArrayList<V> vertices;
     private HashMap<V, Integer> indices;
     private ArrayList<int[]> matrix;
@@ -44,7 +48,7 @@ public class IncMatrix<V> implements Graph<V> {
             if (f == t && row[f] == 2) {
                 return true;
             }
-            if (f != t && row[f] == 1 && row[t] == -1) {
+            if (f != t && row[f] == OUT && row[t] == IN) {
                 return true;
             }
         }
@@ -87,14 +91,14 @@ public class IncMatrix<V> implements Graph<V> {
         int v = indices.get(vertex);
         ArrayList<V> result = new ArrayList<>();
         for (int[] row : matrix) {
-            if (row[v] == 1) {
+            if (row[v] == OUT) {
                 for (int u = 0; u < size; u++) {
-                    if (row[u] == -1) {
+                    if (row[u] == IN) {
                         result.add(vertices.get(u));
                         break;
                     }
                 }
-            } else if (row[v] == 2) {
+            } else if (row[v] == LOOP) {
                 result.add(vertex);
             }
         }
@@ -116,10 +120,10 @@ public class IncMatrix<V> implements Graph<V> {
         }
         int[] column = new int[cap];
         if (f == t) {
-            column[f] = 2;
+            column[f] = LOOP;
         } else {
-            column[f] = 1;
-            column[t] = -1;
+            column[f] = OUT;
+            column[t] = IN;
         }
         matrix.add(column);
     }
@@ -133,8 +137,8 @@ public class IncMatrix<V> implements Graph<V> {
         int t = indices.get(to);
         for (int e = 0; e < matrix.size(); e++) {
             int[] row = matrix.get(e);
-            boolean match = (f == t && row[f] == 2)
-                    || (f != t && row[f] == 1 && row[t] == -1);
+            boolean match = (f == t && row[f] == LOOP)
+                    || (f != t && row[f] == OUT && row[t] == IN);
             if (match) {
                 matrix.remove(e);
                 return;
@@ -176,9 +180,9 @@ public class IncMatrix<V> implements Graph<V> {
             V to = null;
             for (int v = 0; v < size; v++) {
                 switch (row[v]) {
-                    case 1 -> from = vertices.get(v);
-                    case -1 -> to = vertices.get(v);
-                    case 2 -> {
+                    case OUT -> from = vertices.get(v);
+                    case IN -> to = vertices.get(v);
+                    case LOOP -> {
                         from = vertices.get(v);
                         to = vertices.get(v);
                     }
