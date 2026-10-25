@@ -35,6 +35,8 @@ public interface Graph<V> {
      */
     void readFromFile(Path path, Function<String, V> parser) throws IOException;
 
+
+
     @Override
     boolean equals(Object obj);
 

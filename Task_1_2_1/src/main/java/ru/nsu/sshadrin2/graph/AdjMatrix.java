@@ -121,11 +121,11 @@ public class AdjMatrix<V> implements Graph<V> {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || obj.getClass() != this.getClass()) {
-            return false;
-        }
         if (this == obj) {
             return true;
+        }
+        if (obj == null || obj.getClass() != this.getClass()) {
+            return false;
         }
         AdjMatrix<?> other = (AdjMatrix<?>) obj;
         if (!indices.keySet().equals(other.indices.keySet())) {

@@ -2,9 +2,7 @@ package ru.nsu.sshadrin2.graph;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -157,5 +155,64 @@ public class IncMatrix<V> implements Graph<V> {
                 addEdge(from, to);
             }
         }
+    }
+
+    private record Edge<V>(V from, V to) { }
+
+    private Set<Edge<V>> edgeSet() {
+        Set<Edge<V>> result = new HashSet<>();
+        for (int[] row : matrix) {
+            V from = null, to = null;
+            for (int v = 0; v < size; v++) {
+                switch (row[v]) {
+                    case 1 -> from = vertices.get(v);
+                    case -1 -> to = vertices.get(v);
+                    case 2 -> { from = vertices.get(v); to = vertices.get(v); }
+                    default -> { }
+                }
+            }
+            result.add(new Edge<>(from, to));
+        }
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        IncMatrix<?> other = (IncMatrix<?>) obj;
+        if (!indices.keySet().equals(other.indices.keySet())) {
+            return false;
+        }
+        return indices.keySet().equals(other.indices.keySet())
+                && edgeSet().equals(other.edgeSet());
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("IncidenceMatrix{");
+        boolean firstVertex = true;
+        for (V from : indices.keySet()) {
+            if (!firstVertex) {
+                sb.append(", ");
+            }
+            firstVertex = false;
+            sb.append(from).append("=[");
+            boolean firstNeighbour = true;
+            for (V to : adjacentVertices(from)) {
+                if (!firstNeighbour) {
+                    sb.append(", ");
+                }
+                firstNeighbour = false;
+                sb.append(to);
+            }
+            sb.append("]");
+        }
+        sb.append("}");
+        return sb.toString();
     }
 }
