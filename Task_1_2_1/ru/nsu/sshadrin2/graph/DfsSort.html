@@ -81,6 +81,7 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">DfsSort</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
 implements <a href="TopologicalSort.html" title="interface in ru.nsu.sshadrin2.graph">TopologicalSort</a></span></div>
+<div class="block">Topological order sorter which uses DFS.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -110,7 +111,9 @@ implements <a href="TopologicalSort.html" title="interface in ru.nsu.sshadrin2.g
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;V&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;V&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#sort(ru.nsu.sshadrin2.graph.Graph)" class="member-name-link">sort</a><wbr>(<a href="Graph.html" title="interface in ru.nsu.sshadrin2.graph">Graph</a>&lt;V&gt;&nbsp;graph)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Sorts graph in a topological order.</div>
+</div>
 </div>
 </div>
 </div>
@@ -146,9 +149,18 @@ implements <a href="TopologicalSort.html" title="interface in ru.nsu.sshadrin2.g
 <section class="detail" id="sort(ru.nsu.sshadrin2.graph.Graph)">
 <h3>sort</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;V&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;V&gt;</span>&nbsp;<span class="element-name">sort</span><wbr><span class="parameters">(<a href="Graph.html" title="interface in ru.nsu.sshadrin2.graph">Graph</a>&lt;V&gt;&nbsp;graph)</span></div>
+<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="TopologicalSort.html#sort(ru.nsu.sshadrin2.graph.Graph)">TopologicalSort</a></code></span></div>
+<div class="block">Sorts graph in a topological order.
+ Mustn't mutate given graph</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="TopologicalSort.html#sort(ru.nsu.sshadrin2.graph.Graph)">sort</a></code>&nbsp;in interface&nbsp;<code><a href="TopologicalSort.html" title="interface in ru.nsu.sshadrin2.graph">TopologicalSort</a></code></dd>
+<dt>Type Parameters:</dt>
+<dd><code>V</code> - vertices' type</dd>
+<dt>Parameters:</dt>
+<dd><code>graph</code> - graph that needs to be sorted</dd>
+<dt>Returns:</dt>
+<dd>list of vertices in topological order</dd>
 </dl>
 </section>
 </li>
