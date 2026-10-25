@@ -75,7 +75,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Type Parameters:</dt>
-<dd><code>V</code> - the type of value stored in nodes.</dd>
+<dd><code>V</code> - the type of objects stored in vertices.</dd>
 </dl>
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
@@ -85,7 +85,7 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">AdjMatrix&lt;V&gt;</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
 implements <a href="Graph.html" title="interface in ru.nsu.sshadrin2.graph">Graph</a>&lt;V&gt;</span></div>
-<div class="block">Adjacency matrix representation for an oriented graph.</div>
+<div class="block">Adjacency matrix representation of a simple directed graph.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -240,6 +240,7 @@ implements <a href="Graph.html" title="interface in ru.nsu.sshadrin2.graph">Grap
                   throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
 <div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="Graph.html#readFromFile(java.nio.file.Path,java.util.function.Function)">Graph</a></code></span></div>
 <div class="block">Reads graph from a file.
+ Overrides any data present in a graph.
  First line must start with a max vertices number.
  Next line must be a list of not more than this number of different vertices.
  Each subsequent line must be a pair of vertices which represents an oriented edge.</div>
