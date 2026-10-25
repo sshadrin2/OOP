@@ -383,5 +383,19 @@ class AdjMatrixTest {
             graph.removeVertex(22);
             assertEquals(graph, secondGraph);
         }
+
+        @Test
+        void equalAfterEdgeDeletion() {
+            graph.addEdge(1, 2);
+            graph.addEdge(1, 3);
+            graph.addEdge(1, 1);
+            graph.addEdge(3, 1);
+            graph.removeEdge(2, 1);
+            graph.removeEdge(1, 2);
+            graph.removeEdge(1, 3);
+            graph.removeEdge(3, 1);
+            graph.removeEdge(1, 1);
+            assertEquals(graph, secondGraph);
+        }
     }
 }
