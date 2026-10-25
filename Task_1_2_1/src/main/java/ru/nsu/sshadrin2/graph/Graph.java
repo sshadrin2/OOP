@@ -26,9 +26,11 @@ public interface Graph<V> {
 
     /**
      * Reads graph from a file.
+     * Overrides any data present in a graph.
      * First line must start with a max vertices number.
      * Next line must be a list of not more than this number of different vertices.
      * Each subsequent line must be a pair of vertices which represents an oriented edge.
+     *
      *
      * @param path path to a file
      * @param parser mapping from String to a vertex class object.

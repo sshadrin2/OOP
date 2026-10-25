@@ -10,7 +10,7 @@ import java.util.function.Function;
 /**
  * Adjacency matrix representation of a simple directed graph.
  *
- * @param <V> the type of value stored in nodes.
+ * @param <V> the type of objects stored in vertices.
  */
 public class AdjMatrix<V> implements Graph<V> {
     private ArrayList<V> vertices;
@@ -58,10 +58,10 @@ public class AdjMatrix<V> implements Graph<V> {
 
     @Override
     public ArrayList<V> adjacentVertices(V vertex) {
-        ArrayList<V> result = new ArrayList<>();
         if (!hasVertex(vertex)) {
             throw new IllegalArgumentException("unknown vertex: " + vertex);
         }
+        ArrayList<V> result = new ArrayList<>();
         int index = indices.get(vertex);
         for (int i = 0; i < matrix.length; i++) {
             if (matrix[index][i]) {

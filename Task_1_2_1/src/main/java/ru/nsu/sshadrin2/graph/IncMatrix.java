@@ -2,13 +2,17 @@ package ru.nsu.sshadrin2.graph;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Scanner;
+import java.util.Set;
 import java.util.function.Function;
 
 /**
  * Incidence matrix representation of a simple directed graph.
  *
- * @param <V> the type of value stored in nodes.
+ * @param <V> the type of objects stored in vertices.
  */
 public class IncMatrix<V> implements Graph<V> {
 
@@ -194,7 +198,7 @@ public class IncMatrix<V> implements Graph<V> {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("IncidenceMatrix{");
+        StringBuilder sb = new StringBuilder("{");
         boolean firstVertex = true;
         for (V from : indices.keySet()) {
             if (!firstVertex) {
