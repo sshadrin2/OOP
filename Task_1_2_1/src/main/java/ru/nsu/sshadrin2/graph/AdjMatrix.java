@@ -3,13 +3,12 @@ package ru.nsu.sshadrin2.graph;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.function.Function;
 
 /**
- * Adjacency matrix representation for an oriented graph.
+ * Adjacency matrix representation of a simple directed graph.
  *
  * @param <V> the type of value stored in nodes.
  */

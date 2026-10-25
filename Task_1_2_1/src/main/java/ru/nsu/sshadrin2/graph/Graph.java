@@ -6,11 +6,13 @@ import java.nio.file.Path;
 import java.util.function.Function;
 
 /**
- * An oriented graph interface.
+ * A simple directed graph interface.
  *
  * @param <V> the type of values stored in nodes
  */
 public interface Graph<V> {
+
+
 
     void addVertex(V vertex);
 
