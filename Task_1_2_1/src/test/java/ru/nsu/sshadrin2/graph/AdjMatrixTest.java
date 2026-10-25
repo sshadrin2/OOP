@@ -350,7 +350,7 @@ class AdjMatrixTest {
 
         @Test
         void nullNotEqual() {
-            assertNotEquals(null, graph);
+            assertFalse(graph.equals(null));
         }
 
         @Test
@@ -359,7 +359,7 @@ class AdjMatrixTest {
             stringGraph.addVertex("1");
             stringGraph.addVertex("2");
             stringGraph.addVertex("3");
-            assertNotEquals(graph, stringGraph);
+            assertFalse(graph.equals(stringGraph));
         }
 
         @Test
