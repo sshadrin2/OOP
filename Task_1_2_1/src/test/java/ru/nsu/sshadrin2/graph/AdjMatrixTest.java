@@ -397,5 +397,18 @@ class AdjMatrixTest {
             graph.removeEdge(1, 1);
             assertEquals(graph, secondGraph);
         }
+
+        @Test
+        void missingEdgesNotEqual() {
+            graph.addEdge(1, 2);
+            graph.addEdge(1, 3);
+            graph.addEdge(2, 3);
+
+            secondGraph.addEdge(1, 2);
+            secondGraph.addEdge(1, 3);
+            secondGraph.addEdge(1, 2);
+
+            assertNotEquals(graph, secondGraph);
+        }
     }
 }

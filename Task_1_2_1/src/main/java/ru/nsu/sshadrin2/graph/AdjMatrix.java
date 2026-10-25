@@ -105,12 +105,8 @@ public class AdjMatrix<V> implements Graph<V> {
                 String[] edge = scanner.nextLine().trim().split("\\s+");
                 V from = parser.apply(edge[0]);
                 V to = parser.apply(edge[1]);
-                if (!hasVertex(from)) {
-                    addVertex(from);
-                }
-                if (!hasVertex(to)) {
-                    addVertex(to);
-                }
+                addVertex(from);
+                addVertex(to);
                 addEdge(from, to);
             }
         }
