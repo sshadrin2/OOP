@@ -1,22 +1,25 @@
 package ru.nsu.sshadrin2.graph;
 
-import java.util.ArrayList;
-import java.nio.file.Path;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.function.Function;
+import java.nio.file.Path;
 
-import java.util.List;
 /**
  * An oriented graph interface.
  *
  * @param <V> the type of values stored in nodes
  */
 public interface Graph<V> {
+
     void addVertex(V vertex);
+
     void removeVertex(V vertex);
+
     ArrayList<V> adjacentVertices(V vertex);
 
     void addEdge(V from, V to);
+
     void removeEdge(V from, V to);
 
     /**

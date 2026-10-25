@@ -8,6 +8,10 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.function.Function;
 
+/**
+ * Adjacency matrix representation for an oriented graph.
+ * @param <V> the type of value stored in nodes.
+ */
 public class AdjMatrix<V> implements Graph<V> {
     private ArrayList<V> vertices;
     private HashMap<V, Integer> indices;
