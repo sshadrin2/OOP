@@ -326,6 +326,7 @@ class AdjMatrixTest {
             graph.addEdge(1, 1);
             assertEquals(graph, graph);
         }
+
         @Test
         void symmetricEquals() {
             graph.addEdge(1, 2);

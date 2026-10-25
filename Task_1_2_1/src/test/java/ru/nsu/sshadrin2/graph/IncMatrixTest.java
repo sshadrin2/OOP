@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class IncMatrixTest {
-
     @Nested
     @DisplayName("addVertex")
     class AddVertex {
@@ -326,6 +325,7 @@ class IncMatrixTest {
             graph.addEdge(1, 1);
             assertEquals(graph, graph);
         }
+
         @Test
         void symmetricEquals() {
             graph.addEdge(1, 2);

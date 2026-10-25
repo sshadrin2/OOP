@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Topological order sorter which uses DFS.
+ */
 public class DfsSort implements TopologicalSort {
     private enum Color { WHITE, GREY, BLACK }
 

@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Topological order sorter which uses Kahn's algorithm.
+ */
 public class KahnSort implements TopologicalSort {
 
     @Override

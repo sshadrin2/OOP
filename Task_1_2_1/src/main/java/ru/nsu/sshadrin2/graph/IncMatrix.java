@@ -168,6 +168,7 @@ public class IncMatrix<V> implements Graph<V> {
     }
 
     private record Edge<V>(V from, V to) { }
+
     private Set<Edge<V>> edgeSet() {
         Set<Edge<V>> result = new HashSet<>();
         for (int[] row : matrix) {
@@ -177,10 +178,10 @@ public class IncMatrix<V> implements Graph<V> {
                 switch (row[v]) {
                     case 1 -> from = vertices.get(v);
                     case -1 -> to = vertices.get(v);
-                    case 2 ->   {
-                                from = vertices.get(v);
-                                to = vertices.get(v);
-                                }
+                    case 2 -> {
+                        from = vertices.get(v);
+                        to = vertices.get(v);
+                    }
                     default -> { }
                 }
             }
