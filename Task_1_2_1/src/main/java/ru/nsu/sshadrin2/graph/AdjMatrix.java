@@ -2,9 +2,7 @@ package ru.nsu.sshadrin2.graph;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -148,6 +146,27 @@ public class AdjMatrix<V> implements Graph<V> {
             }
         }
         return true;
+    }
+
+    private record Edge<V>(V from, V to) { }
+
+    private Set<Edge<V>> edgeSet() {
+        Set<Edge<V>> result = new HashSet<>();
+        for (V from : indices.keySet()) {
+            int i = indices.get(from);
+            for (V to : indices.keySet()) {
+                int j = indices.get(to);
+                if (matrix[i][j]) {
+                    result.add(new Edge<>(from, to));
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(indices.keySet(), edgeSet());
     }
 
     @Override

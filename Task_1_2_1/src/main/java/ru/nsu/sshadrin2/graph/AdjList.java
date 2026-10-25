@@ -125,6 +125,11 @@ public class AdjList<V> implements Graph<V> {
     }
 
     @Override
+    public int hashCode() {
+        return matrix.hashCode();
+    }
+
+    @Override
     public String toString() {
         return matrix.toString();
     }

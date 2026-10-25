@@ -2,11 +2,7 @@ package ru.nsu.sshadrin2.graph;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -208,6 +204,11 @@ public class IncMatrix<V> implements Graph<V> {
         }
         return indices.keySet().equals(other.indices.keySet())
                 && edgeSet().equals(other.edgeSet());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(indices.keySet(), edgeSet());
     }
 
     @Override
