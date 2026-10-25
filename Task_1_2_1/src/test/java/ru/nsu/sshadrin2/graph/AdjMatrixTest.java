@@ -1,10 +1,5 @@
 package ru.nsu.sshadrin2.graph;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,6 +9,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class AdjMatrixTest {
 
@@ -295,6 +292,96 @@ class AdjMatrixTest {
 
             assertEquals(List.of("b"), graph.adjacentVertices("a"));
             assertTrue(graph.adjacentVertices("b").isEmpty());
+        }
+    }
+
+    @Nested
+    @DisplayName("equals")
+    class Equals {
+        private Graph<Integer> graph;
+        private Graph<Integer> secondGraph;
+
+        @BeforeEach
+        void setUp() {
+            graph = new AdjMatrix<Integer>(32);
+            secondGraph = new AdjMatrix<Integer>(64);
+
+            graph.addVertex(1);
+            graph.addVertex(2);
+            graph.addVertex(3);
+
+            secondGraph.addVertex(1);
+            secondGraph.addVertex(2);
+            secondGraph.addVertex(3);
+        }
+
+        @Test void reflexive() {
+            graph.addEdge(1, 2);
+            graph.addEdge(1, 3);
+            graph.addEdge(1, 1);
+            assertEquals(graph, graph);
+        }
+        @Test
+        void symmetricEquals() {
+            graph.addEdge(1, 2);
+            graph.addEdge(1, 3);
+            graph.addEdge(1, 1);
+
+            secondGraph.addEdge(1, 2);
+            secondGraph.addEdge(1, 3);
+            secondGraph.addEdge(1, 1);
+
+            assertEquals(graph.equals(secondGraph), secondGraph.equals(graph));
+        }
+
+        @Test
+        void symmetricNotEqual() {
+            graph.addEdge(1, 2);
+            graph.addEdge(1, 3);
+            graph.addEdge(1, 1);
+
+            secondGraph.addVertex(0);
+            secondGraph.addEdge(1, 2);
+            secondGraph.addEdge(1, 3);
+            secondGraph.addEdge(1, 1);
+
+            assertEquals(graph.equals(secondGraph), secondGraph.equals(graph));
+        }
+
+        @Test
+        void nullNotEqual() {
+            assertNotEquals(null, graph);
+        }
+
+        @Test
+        void differentClasses() {
+            Graph<String> stringGraph = new AdjMatrix<>(32);
+            stringGraph.addVertex("1");
+            stringGraph.addVertex("2");
+            stringGraph.addVertex("3");
+            assertNotEquals(graph, stringGraph);
+        }
+
+        @Test
+        void equalAfterVertexDeletion() {
+            graph.addVertex(20);
+            graph.addVertex(21);
+            graph.addVertex(22);
+            graph.addEdge(20, 21);
+            graph.addEdge(20, 22);
+            graph.addEdge(20, 1);
+            graph.addEdge(20, 2);
+            graph.addEdge(20, 3);
+            graph.addEdge(1, 20);
+            graph.addEdge(1, 21);
+            graph.addEdge(1, 22);
+
+            graph.removeVertex(20);
+            graph.removeVertex(21);
+            graph.addVertex(20);
+            graph.removeVertex(20);
+            graph.removeVertex(22);
+            assertEquals(graph, secondGraph);
         }
     }
 }
