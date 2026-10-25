@@ -300,8 +300,8 @@ class IncMatrixTest {
     }
 
     @Nested
-    @DisplayName("equals")
-    class Equals {
+    @DisplayName("equalsAndHashCode")
+    class EqualsAndHashCode {
         private Graph<Integer> graph;
         private Graph<Integer> secondGraph;
 
@@ -324,6 +324,7 @@ class IncMatrixTest {
             graph.addEdge(1, 3);
             graph.addEdge(1, 1);
             assertEquals(graph, graph);
+            assertEquals(graph.hashCode(), graph.hashCode());
         }
 
         @Test
@@ -337,6 +338,7 @@ class IncMatrixTest {
             secondGraph.addEdge(1, 1);
 
             assertEquals(graph.equals(secondGraph), secondGraph.equals(graph));
+            assertEquals(graph.hashCode(), secondGraph.hashCode());
         }
 
         @Test
@@ -360,7 +362,7 @@ class IncMatrixTest {
 
         @Test
         void differentClasses() {
-            Graph<String> stringGraph = new IncMatrix<>(32);
+            Graph<String> stringGraph = new AdjMatrix<>(32);
             stringGraph.addVertex("1");
             stringGraph.addVertex("2");
             stringGraph.addVertex("3");
@@ -387,6 +389,7 @@ class IncMatrixTest {
             graph.removeVertex(20);
             graph.removeVertex(22);
             assertEquals(graph, secondGraph);
+            assertEquals(graph.hashCode(), secondGraph.hashCode());
         }
 
         @Test
@@ -401,6 +404,7 @@ class IncMatrixTest {
             graph.removeEdge(3, 1);
             graph.removeEdge(1, 1);
             assertEquals(graph, secondGraph);
+            assertEquals(graph.hashCode(), secondGraph.hashCode());
         }
 
         @Test

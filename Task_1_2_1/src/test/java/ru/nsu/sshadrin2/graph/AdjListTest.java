@@ -301,8 +301,8 @@ class AdjListTest {
     }
 
     @Nested
-    @DisplayName("equals")
-    class Equals {
+    @DisplayName("equalsAndHashCode")
+    class EqualsAndHashCode {
         private Graph<Integer> graph;
         private Graph<Integer> secondGraph;
 
@@ -325,6 +325,7 @@ class AdjListTest {
             graph.addEdge(1, 3);
             graph.addEdge(1, 1);
             assertEquals(graph, graph);
+            assertEquals(graph.hashCode(), graph.hashCode());
         }
 
         @Test
@@ -338,6 +339,7 @@ class AdjListTest {
             secondGraph.addEdge(1, 1);
 
             assertEquals(graph.equals(secondGraph), secondGraph.equals(graph));
+            assertEquals(graph.hashCode(), secondGraph.hashCode());
         }
 
         @Test
@@ -361,7 +363,7 @@ class AdjListTest {
 
         @Test
         void differentClasses() {
-            Graph<String> stringGraph = new AdjList<>(32);
+            Graph<String> stringGraph = new AdjMatrix<>(32);
             stringGraph.addVertex("1");
             stringGraph.addVertex("2");
             stringGraph.addVertex("3");
@@ -388,6 +390,7 @@ class AdjListTest {
             graph.removeVertex(20);
             graph.removeVertex(22);
             assertEquals(graph, secondGraph);
+            assertEquals(graph.hashCode(), secondGraph.hashCode());
         }
 
         @Test
@@ -402,6 +405,7 @@ class AdjListTest {
             graph.removeEdge(3, 1);
             graph.removeEdge(1, 1);
             assertEquals(graph, secondGraph);
+            assertEquals(graph.hashCode(), secondGraph.hashCode());
         }
 
         @Test

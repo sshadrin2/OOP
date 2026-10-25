@@ -301,8 +301,8 @@ class AdjMatrixTest {
     }
 
     @Nested
-    @DisplayName("equals")
-    class Equals {
+    @DisplayName("equalsAndHashCode")
+    class EqualsAndHashCode {
         private Graph<Integer> graph;
         private Graph<Integer> secondGraph;
 
@@ -325,6 +325,7 @@ class AdjMatrixTest {
             graph.addEdge(1, 3);
             graph.addEdge(1, 1);
             assertEquals(graph, graph);
+            assertEquals(graph.hashCode(), graph.hashCode());
         }
 
         @Test
@@ -338,6 +339,7 @@ class AdjMatrixTest {
             secondGraph.addEdge(1, 1);
 
             assertEquals(graph.equals(secondGraph), secondGraph.equals(graph));
+            assertEquals(graph.hashCode(), secondGraph.hashCode());
         }
 
         @Test
@@ -388,6 +390,7 @@ class AdjMatrixTest {
             graph.removeVertex(20);
             graph.removeVertex(22);
             assertEquals(graph, secondGraph);
+            assertEquals(graph.hashCode(), secondGraph.hashCode());
         }
 
         @Test
@@ -402,6 +405,7 @@ class AdjMatrixTest {
             graph.removeEdge(3, 1);
             graph.removeEdge(1, 1);
             assertEquals(graph, secondGraph);
+            assertEquals(graph.hashCode(), secondGraph.hashCode());
         }
 
         @Test
@@ -417,4 +421,6 @@ class AdjMatrixTest {
             assertNotEquals(graph, secondGraph);
         }
     }
+
+
 }
