@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 import java.util.function.Function;
 
@@ -30,6 +31,11 @@ public class AdjList<V> implements Graph<V> {
 
     private boolean hasVertex(V vertex) {
         return matrix.containsKey(vertex);
+    }
+
+    @Override
+    public ArrayList<V> vertices() {
+        return new ArrayList<>(matrix.keySet());
     }
 
     @Override

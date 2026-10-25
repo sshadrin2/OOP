@@ -36,6 +36,11 @@ public class AdjMatrix<V> implements Graph<V> {
     }
 
     @Override
+    public ArrayList<V> vertices() {
+        return new ArrayList<>(indices.keySet());
+    }
+
+    @Override
     public void addVertex(V vertex) {
         if (hasVertex(vertex)) {
             return;

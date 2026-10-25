@@ -12,7 +12,7 @@ import java.util.function.Function;
  */
 public interface Graph<V> {
 
-
+    ArrayList<V> vertices();
 
     void addVertex(V vertex);
 
