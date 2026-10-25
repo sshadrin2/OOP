@@ -46,11 +46,10 @@ public class AdjList<V> implements Graph<V> {
         if (!hasVertex(vertex)) {
             return;
         }
-        ArrayList<V> adjacent = matrix.get(vertex);
-        for (V to : adjacent) {
-            matrix.get(to).remove(vertex);
-        }
         matrix.remove(vertex);
+        for (V from : matrix.keySet()) {
+            matrix.get(from).remove(vertex);
+        }
     }
 
     @Override
@@ -77,11 +76,8 @@ public class AdjList<V> implements Graph<V> {
 
     @Override
     public void removeEdge(V from, V to) {
-        if (!hasVertex(from)) {
-            throw new IllegalArgumentException("unknown vertex: " + from);
-        }
-        if (!hasVertex(to)) {
-            throw new IllegalArgumentException("unknown vertex: " + to);
+        if (!hasVertex(from) || !hasVertex(to)) {
+            return;
         }
         matrix.get(from).remove(to);
     }
