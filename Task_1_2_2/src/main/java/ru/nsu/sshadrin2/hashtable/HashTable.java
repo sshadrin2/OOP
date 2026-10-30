@@ -36,7 +36,7 @@ public class HashTable<K, V> {
                 iter.value = value;
                 return;
             }
-            addNode(key, value);
+            iter.addNode(key, value);
             return;
         }
 

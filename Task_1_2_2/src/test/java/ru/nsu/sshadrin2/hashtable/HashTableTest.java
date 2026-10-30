@@ -57,6 +57,21 @@ class HashTableTest {
             assertNull(table.get("abababa"));
         }
 
+        @Test
+        void largeTable() {
+            int size = 10000;
+            String[] strArray = new String[size];
+            Integer[] intArray = new Integer[size];
+            for (int i = 0; i < size; i++) {
+                intArray[i] = i;
+                strArray[i] = String.valueOf(i);
+                table.put(strArray[i], intArray[i]);
+            }
+            for (int i = 0; i < size; i++) {
+                assertEquals(intArray[i], table.get(strArray[i]));
+            }
+
+        }
 
     }
 }
