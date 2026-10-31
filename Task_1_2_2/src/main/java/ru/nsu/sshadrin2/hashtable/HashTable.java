@@ -2,10 +2,10 @@ package ru.nsu.sshadrin2.hashtable;
 
 /**
  * Hash table that allows various operations with key/value mappings with constant time.
- * Key must be not null
+ * Key must be not null.
  *
- * @param <K>
- * @param <V>
+ * @param <K> type of mapping keys
+ * @param <V> type of mapped values
  */
 public class HashTable<K, V> {
     private static class Node<K, V> {
@@ -105,8 +105,7 @@ public class HashTable<K, V> {
 
     @SuppressWarnings("unchecked")
     private void resize() {
-        Node<K, V>[] oldTable = table;
-
+        final Node<K, V>[] oldTable = table;
         size = size << 1;
         table = (Node<K, V>[]) new Node[size];
         setThreshold();
@@ -255,8 +254,12 @@ public class HashTable<K, V> {
     @Override
     @SuppressWarnings("unchecked")
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         HashTable<K, V> t = (HashTable<K, V>) o;
         if (nodeCount != t.nodeCount) {

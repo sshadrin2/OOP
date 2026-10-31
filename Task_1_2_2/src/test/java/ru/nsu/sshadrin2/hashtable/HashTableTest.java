@@ -1,6 +1,10 @@
 package ru.nsu.sshadrin2.hashtable;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -87,6 +91,7 @@ class HashTableTest {
             assertNull(table.get("aaaaaaaaaaaaaa"));
             assertNull(table.get(""));
         }
+
         @Test
         void emptyTableContains() {
             assertFalse(table.contains(null));
@@ -171,6 +176,7 @@ class HashTableTest {
             }
         }
     }
+
     @Nested
     class EqualsAndHashCode {
         HashTable<String, Integer> tableA;
@@ -200,6 +206,7 @@ class HashTableTest {
             tableB.put("", 1234);
             tableB.put("bibi", 321);
         }
+
         @Test
         void largeTableEquals() {
             int size = 10000;
@@ -217,7 +224,7 @@ class HashTableTest {
     }
 
     @Nested
-    class toString {
+    class ToString {
         HashTable<String, Integer> table;
 
         @BeforeEach
