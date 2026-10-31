@@ -1,7 +1,5 @@
 package ru.nsu.sshadrin2.hashtable;
 
-import java.util.Arrays;
-
 /**
  * Hash table that allows various operations with key/value mappings with constant time.
  * Key must be not null
@@ -14,19 +12,21 @@ public class HashTable<K, V> {
         final K key;
         V value;
         Node<K, V> next;
+        final int hash;
 
-        Node(K key, V value) {
+        Node(K key, V value, int hash) {
             this.key = key;
             this.value = value;
             next = null;
+            this.hash = hash;
         }
 
-        void addNode(K key, V value) {
-            next = new Node<>(key, value);
+        void addNode(K key, V value, int hash) {
+            next = new Node<>(key, value, hash);
         }
 
 
-        boolean putNode(K key, V value) { // returns true if the key wasn't present
+        boolean putNode(K key, V value, int hash) { // returns true if the key wasn't present
             Node<K, V> iter = this;
             while (iter.next != null) {
                 if (key.equals(iter.key)) {
@@ -40,7 +40,7 @@ public class HashTable<K, V> {
                 iter.value = value;
                 return false;
             }
-            iter.addNode(key, value);
+            iter.addNode(key, value, hash);
             return true;
         }
 
@@ -91,10 +91,44 @@ public class HashTable<K, V> {
     private int nodeCount = 0;
     private int threshold;
 
+    // private methods
+
     private int getHash(K key) {
-        int hash = key.hashCode() & (size - 1);
-        return hash ^ (hash >>> 16);
+        int hash = key.hashCode();
+        hash = hash ^ (hash >>> 16);
+        return hash;
     }
+
+    private void setThreshold() {
+        threshold = Math.max(1, (int) (size * loadFactor));
+    }
+
+    @SuppressWarnings("unchecked")
+    private void resize() {
+        Node<K, V>[] oldTable = table;
+
+        size = size << 1;
+        table = (Node<K, V>[]) new Node[size];
+        setThreshold();
+
+        for (Node<K, V> oldHead : oldTable) {
+            if (oldHead == null) {
+                continue;
+            }
+
+            for (Node<K, V> iter = oldHead.next; iter != null; iter = iter.next) {
+                int hash = getHash(iter.key);
+                int index = hash & (size - 1);
+                if (table[index] == null) {
+                    table[index] = new Node<>(null, null, 0);
+                }
+
+                table[index].putNode(iter.key, iter.value, hash);
+            }
+        }
+    }
+
+    // public methods
 
     /**
      * Constructs hashtable with default load factor.
@@ -114,7 +148,7 @@ public class HashTable<K, V> {
             throw new IllegalArgumentException("Illegal load factor: " + loadFactor);
         }
         this.loadFactor = loadFactor;
-        threshold = (int) (loadFactor * size);
+        setThreshold();
         table = (Node<K, V>[]) new Node[size];
     }
 
@@ -130,14 +164,18 @@ public class HashTable<K, V> {
             return;
         }
         int hash = getHash(key);
-        if (table[hash] == null) {
-            table[hash] = new Node<>(null, null);
-            table[hash].addNode(key, val);
+        int index = hash & (size - 1);
+        if (table[index] == null) {
+            table[index] = new Node<>(null, null, 0);
+            table[index].addNode(key, val, hash);
             nodeCount++;
-            return;
+        } else {
+            if (table[index].putNode(key, val, hash)) {
+                nodeCount++;
+            }
         }
-        if (table[hash].putNode(key, val)) {
-            nodeCount++;
+        if (nodeCount >= threshold) {
+            resize();
         }
     }
 
@@ -154,10 +192,11 @@ public class HashTable<K, V> {
             throw new IllegalArgumentException("Key must be non null.");
         }
         int hash = getHash(key);
-        if (table[hash] == null) {
+        int index = hash & (size - 1);
+        if (table[index] == null) {
             return null;
         }
-        return table[hash].getValue(key);
+        return table[index].getValue(key);
     }
 
     /**
@@ -171,10 +210,11 @@ public class HashTable<K, V> {
             return false;
         }
         int hash = getHash(key);
-        if (table[hash] == null) {
+        int index = hash & (size - 1);
+        if (table[index] == null) {
             return false;
         }
-        return table[hash].containsNode(key);
+        return table[index].containsNode(key);
     }
 
     /**
@@ -188,10 +228,11 @@ public class HashTable<K, V> {
             return;
         }
         int hash = getHash(key);
-        if (table[hash] == null) {
+        int index = hash & (size - 1);
+        if (table[index] == null) {
             return;
         }
-        if (table[hash].removeNode(key)) {
+        if (table[index].removeNode(key)) {
             nodeCount--;
         }
     }
