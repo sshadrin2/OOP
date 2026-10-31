@@ -29,13 +29,13 @@ public class HashTable<K, V> {
         boolean putNode(K key, V value, int hash) { // returns true if the key wasn't present
             Node<K, V> iter = this;
             while (iter.next != null) {
-                if (key.equals(iter.key)) {
+                if (iter.hash == hash && key.equals(iter.key)) {
                     iter.value = value;
                     return false;
                 }
                 iter = iter.next;
             }
-            if (key.equals(iter.key)) {
+            if (iter.hash == hash && key.equals(iter.key)) {
                 V prev = iter.value;
                 iter.value = value;
                 return false;
@@ -44,10 +44,10 @@ public class HashTable<K, V> {
             return true;
         }
 
-        boolean removeNode(K key) { // returns true if the key was present.
+        boolean removeNode(K key, int hash) { // returns true if the key was present.
             Node<K, V> iter = this;
             while (iter.next != null) {
-                if (key.equals(iter.next.key)) {
+                if (iter.next.hash == hash && key.equals(iter.next.key)) {
                     iter.next = iter.next.next;
                     return true;
                 }
@@ -57,10 +57,10 @@ public class HashTable<K, V> {
             return false;
         }
 
-        boolean containsNode(K key) {
+        boolean containsNode(K key, int hash) {
             Node<K, V> iter = this.next;
             while (iter != null) {
-                if (key.equals(iter.key)) {
+                if (iter.hash == hash && key.equals(iter.key)) {
                     return true;
                 }
                 iter = iter.next;
@@ -68,10 +68,10 @@ public class HashTable<K, V> {
             return false;
         }
 
-        V getValue(K key) {
+        V getValue(K key, int hash) {
             Node<K, V> iter = this.next;
             while (iter != null) {
-                if (iter.key.equals(key)) {
+                if (iter.hash == hash && key.equals(iter.key)) {
                     return iter.value;
                 }
                 iter = iter.next;
@@ -196,7 +196,7 @@ public class HashTable<K, V> {
         if (table[index] == null) {
             return null;
         }
-        return table[index].getValue(key);
+        return table[index].getValue(key, hash);
     }
 
     /**
@@ -214,7 +214,7 @@ public class HashTable<K, V> {
         if (table[index] == null) {
             return false;
         }
-        return table[index].containsNode(key);
+        return table[index].containsNode(key, hash);
     }
 
     /**
@@ -232,7 +232,7 @@ public class HashTable<K, V> {
         if (table[index] == null) {
             return;
         }
-        if (table[index].removeNode(key)) {
+        if (table[index].removeNode(key, hash)) {
             nodeCount--;
         }
     }
