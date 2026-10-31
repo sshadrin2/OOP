@@ -1,0 +1,331 @@
+package ru.nsu.sshadrin2.hashtable;
+
+/**
+ * Hash table that allows various operations with key/value mappings with constant time.
+ * Key must be not null.
+ *
+ * @param <K> type of mapping keys
+ * @param <V> type of mapped values
+ */
+public class HashTable<K, V> {
+    private static class Node<K, V> {
+        final K key;
+        V value;
+        Node<K, V> next;
+        final int hash;
+
+        Node(K key, V value, int hash) {
+            this.key = key;
+            this.value = value;
+            next = null;
+            this.hash = hash;
+        }
+
+        void addNode(K key, V value, int hash) {
+            next = new Node<>(key, value, hash);
+        }
+
+
+        boolean putNode(K key, V value, int hash) { // returns true if the key wasn't present
+            Node<K, V> iter = this;
+            while (iter.next != null) {
+                if (iter.hash == hash && key.equals(iter.key)) {
+                    iter.value = value;
+                    return false;
+                }
+                iter = iter.next;
+            }
+            if (iter.hash == hash && key.equals(iter.key)) {
+                V prev = iter.value;
+                iter.value = value;
+                return false;
+            }
+            iter.addNode(key, value, hash);
+            return true;
+        }
+
+        boolean removeNode(K key, int hash) { // returns true if the key was present.
+            Node<K, V> iter = this;
+            while (iter.next != null) {
+                if (iter.next.hash == hash && key.equals(iter.next.key)) {
+                    iter.next = iter.next.next;
+                    return true;
+                }
+                iter = iter.next;
+            }
+
+            return false;
+        }
+
+        boolean containsNode(K key, int hash) {
+            Node<K, V> iter = this.next;
+            while (iter != null) {
+                if (iter.hash == hash && key.equals(iter.key)) {
+                    return true;
+                }
+                iter = iter.next;
+            }
+            return false;
+        }
+
+        V getValue(K key, int hash) {
+            Node<K, V> iter = this.next;
+            while (iter != null) {
+                if (iter.hash == hash && key.equals(iter.key)) {
+                    return iter.value;
+                }
+                iter = iter.next;
+            }
+            return null;
+        }
+
+
+    }
+
+    private static final float DEFAULT_LOAD_FACTOR = 0.75f;
+    private static final int DEFAULT_SIZE = 16;
+
+    private Node<K, V>[] table;
+    private final float loadFactor;
+    private int size = DEFAULT_SIZE;
+    private int nodeCount = 0;
+    private int threshold;
+
+    // private methods
+
+    private int getHash(K key) {
+        int hash = key.hashCode();
+        hash = hash ^ (hash >>> 16);
+        return hash;
+    }
+
+    private void setThreshold() {
+        threshold = Math.max(1, (int) (size * loadFactor));
+    }
+
+    @SuppressWarnings("unchecked")
+    private void resize() {
+        final Node<K, V>[] oldTable = table;
+        size = size << 1;
+        table = (Node<K, V>[]) new Node[size];
+        setThreshold();
+
+        for (Node<K, V> oldHead : oldTable) {
+            if (oldHead == null) {
+                continue;
+            }
+
+            for (Node<K, V> iter = oldHead.next; iter != null; iter = iter.next) {
+                int hash = getHash(iter.key);
+                int index = hash & (size - 1);
+                if (table[index] == null) {
+                    table[index] = new Node<>(null, null, 0);
+                }
+
+                table[index].putNode(iter.key, iter.value, hash);
+            }
+        }
+    }
+
+    // public methods
+
+    /**
+     * Constructs hashtable with default load factor.
+     */
+    public HashTable() {
+        this(DEFAULT_LOAD_FACTOR);
+    }
+
+    /**
+     * Constructs hashtable with given load factor.
+     *
+     * @param loadFactor load factor of a table
+     */
+    @SuppressWarnings("unchecked")
+    public HashTable(float loadFactor) {
+        if (loadFactor <= 0 || Float.isNaN(loadFactor)) {
+            throw new IllegalArgumentException("Illegal load factor: " + loadFactor);
+        }
+        this.loadFactor = loadFactor;
+        setThreshold();
+        table = (Node<K, V>[]) new Node[size];
+    }
+
+    /**
+     * Puts key/value mapping in the table.
+     * Overwrites mapping value if it was already present.
+     *
+     * @param key key of a mapping
+     * @param val value of a mapping
+     */
+    public void put(K key, V val) {
+        if (key == null) {
+            return;
+        }
+        int hash = getHash(key);
+        int index = hash & (size - 1);
+        if (table[index] == null) {
+            table[index] = new Node<>(null, null, 0);
+            table[index].addNode(key, val, hash);
+            nodeCount++;
+        } else {
+            if (table[index].putNode(key, val, hash)) {
+                nodeCount++;
+            }
+        }
+        if (nodeCount >= threshold) {
+            resize();
+        }
+    }
+
+    /**
+     * Gets value mapped by a key.
+     * Returns null if there is no mapping with such key.
+     *
+     * @param key key of a mapping
+     * @return value of a mapping or null if there is none
+     * @throws IllegalArgumentException if key is null
+     */
+    public V get(K key) {
+        if (key == null) {
+            throw new IllegalArgumentException("Key must be non null.");
+        }
+        int hash = getHash(key);
+        int index = hash & (size - 1);
+        if (table[index] == null) {
+            return null;
+        }
+        return table[index].getValue(key, hash);
+    }
+
+    /**
+     * Checks if mapping is present in the table.
+     *
+     * @param key key of a mapping
+     * @return true if there is a mapping with a given key and false otherwise
+     */
+    public boolean contains(K key) {
+        if (key == null) {
+            return false;
+        }
+        int hash = getHash(key);
+        int index = hash & (size - 1);
+        if (table[index] == null) {
+            return false;
+        }
+        return table[index].containsNode(key, hash);
+    }
+
+    /**
+     * Removes a mapping from the table.
+     * Doesn't remove anything if there is no such mapping.
+     *
+     * @param key key of a mapping
+     */
+    public void remove(K key) {
+        if (key == null) {
+            return;
+        }
+        int hash = getHash(key);
+        int index = hash & (size - 1);
+        if (table[index] == null) {
+            return;
+        }
+        if (table[index].removeNode(key, hash)) {
+            nodeCount--;
+        }
+    }
+
+    /**
+     * Updates value of an existing mapping.
+     *
+     * @param key key of a mapping
+     * @param value new value of a mapping
+     * @return true if a mapping with given key was present and false otherwise
+     */
+    public boolean update(K key, V value) {
+        if (contains(key)) {
+            put(key, value);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        HashTable<K, V> t = (HashTable<K, V>) o;
+        if (nodeCount != t.nodeCount) {
+            return false;
+        }
+        for (Node<K, V> head : table) {
+            if (head == null) {
+                continue;
+            }
+            for (Node<K, V> iter = head.next; iter != null; iter = iter.next) {
+                K key = iter.key;
+                if (!t.contains(key)) {
+                    return false;
+                }
+                V value = iter.value;
+                V otherValue = t.get(key);
+                if (value == null) {
+                    if (t.get(key) != null) {
+                        return false;
+                    }
+                } else {
+                    if (!value.equals(t.get(key))) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        for (Node<K, V> head : table) {
+            if (head == null) {
+                continue;
+            }
+            for (Node<K, V> iter = head.next; iter != null; iter = iter.next) {
+                K key = iter.key;
+                V value = iter.value;
+                hash += key.hashCode() ^ (value == null ? 0 : value.hashCode());
+            }
+        }
+        return hash;
+    }
+
+    @Override
+    public String toString() {
+        if (nodeCount == 0) {
+            return "{}";
+        }
+        StringBuilder res = new StringBuilder("{");
+        for (Node<K, V> head : table) {
+            if (head == null) {
+                continue;
+            }
+            for (Node<K, V> iter = head.next; iter != null; iter = iter.next) {
+                res.append(iter.key);
+                res.append('=');
+                res.append(iter.value);
+                res.append(", ");
+            }
+        }
+        res.setLength(res.length() - 2);
+        res.append('}');
+
+        return res.toString();
+    }
+}
