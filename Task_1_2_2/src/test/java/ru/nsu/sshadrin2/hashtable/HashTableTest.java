@@ -1,14 +1,12 @@
 package ru.nsu.sshadrin2.hashtable;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class HashTableTest {
 
@@ -145,10 +143,8 @@ class HashTableTest {
         void largeTableRemove() {
             int size = 10000;
             String[] strArray = new String[size];
-            String[] missingStrArray = new String[size];
             for (int i = 0; i < size; i++) {
                 strArray[i] = String.valueOf(i);
-                missingStrArray[i] =  String.valueOf(i + size);
                 table.put(strArray[i], i);
             }
             for (int i = 0; i < size; i++) {
@@ -247,6 +243,73 @@ class HashTableTest {
             for (int i = 0; i < strings.length; i++) {
                 assertTrue(string.contains(strings[i] + '=' + i));
             }
+        }
+    }
+
+    @Nested
+    class Iter {
+        HashTable<String, Integer> table;
+        Iterator<Map.Entry<String, Integer>> iter;
+
+        @BeforeEach
+        void setUp() {
+            table = new HashTable<>();
+        }
+
+        @Test
+        void emptyTable() {
+            iter = table.iterator();
+            assertFalse(iter.hasNext());
+            assertThrows(NoSuchElementException.class, () -> iter.next());
+        }
+
+        @Test
+        void singletonTable() {
+            table.put("buh", 1);
+            iter = table.iterator();
+            assertTrue(iter.hasNext());
+            Map.Entry<String, Integer> entry = iter.next();
+            assertEquals("buh", entry.getKey());
+            assertEquals(1, entry.getValue());
+            assertFalse(iter.hasNext());
+        }
+
+        @Test
+        void smallTable() {
+            table.put("uhh", 124);
+            table.put("uhhh", 1221);
+            table.put("huh", 421);
+        }
+
+        @Test
+        void concModException() {
+            int size = 10;
+            String[] strArray = new String[size];
+            for (int i = 0; i < size; i++) {
+                strArray[i] = String.valueOf(i);
+                table.put(strArray[i], i);
+            }
+            iter = table.iterator();
+            iter.next();
+            table.put("1", 1221);
+            assertDoesNotThrow(() -> iter.next());
+            table.put("12", 1221);
+            assertThrows(ConcurrentModificationException.class, () -> iter.next());
+        }
+
+        @Test
+        void largeTable() {
+            int size = 100;
+            String[] strArray = new String[size];
+            for (int i = 0; i < size; i++) {
+                strArray[i] = String.valueOf(i);
+                table.put(strArray[i], i);
+            }
+            HashTable<String, Integer> tableB = new HashTable<>(1.0f);
+            for (Map.Entry<String, Integer> iter : table) {
+                tableB.put(iter.getKey(), iter.getValue());
+            }
+            assertEquals(tableB, table);
         }
     }
 }

@@ -1,5 +1,8 @@
 package ru.nsu.sshadrin2.hashtable;
 
+import java.util.*;
+import java.util.function.Consumer;
+
 /**
  * Hash table that allows various operations with key/value mappings with constant time.
  * Key must be not null.
@@ -7,8 +10,56 @@ package ru.nsu.sshadrin2.hashtable;
  * @param <K> type of mapping keys
  * @param <V> type of mapped values
  */
-public class HashTable<K, V> {
-    private static class Node<K, V> {
+public class HashTable<K, V> implements Iterable<Map.Entry<K, V>> {
+    @Override
+    public Iterator<Map.Entry<K, V>> iterator() {
+        return new TableIterator();
+    }
+
+    private class TableIterator implements Iterator<Map.Entry<K, V>> {
+        int expectedModCount = modCount;
+        int bucketIndex = 0;
+        Node<K, V> current = null;
+        Node<K, V> next;
+
+        TableIterator() {
+            next = findNext();
+        }
+
+        private Node<K, V> findNext() {
+            if (current != null && current.next != null) {
+                return current.next;
+            }
+            while (bucketIndex < size) {
+                Node<K, V> head = table[bucketIndex];
+                bucketIndex++;
+                if (head != null && head.next != null) {
+                    return head.next;
+                }
+            }
+            return null;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return next != null;
+        }
+
+        @Override
+        public Map.Entry<K, V> next() {
+            if (modCount != expectedModCount) {
+                throw new ConcurrentModificationException();
+            }
+            if (next == null) {
+                throw new NoSuchElementException();
+            }
+            current = next;
+            next = findNext();
+            return current;
+        }
+    }
+
+    private static class Node<K, V> implements Map.Entry<K, V> {
         final K key;
         V value;
         Node<K, V> next;
@@ -68,7 +119,7 @@ public class HashTable<K, V> {
             return false;
         }
 
-        V getValue(K key, int hash) {
+        V getNode(K key, int hash) {
             Node<K, V> iter = this.next;
             while (iter != null) {
                 if (iter.hash == hash && key.equals(iter.key)) {
@@ -80,6 +131,22 @@ public class HashTable<K, V> {
         }
 
 
+        @Override
+        public K getKey() {
+            return key;
+        }
+
+        @Override
+        public V getValue() {
+            return value;
+        }
+
+        @Override
+        public V setValue(V value) {
+            V prev = this.value;
+            this.value = value;
+            return prev;
+        }
     }
 
     private static final float DEFAULT_LOAD_FACTOR = 0.75f;
@@ -90,7 +157,7 @@ public class HashTable<K, V> {
     private int size = DEFAULT_SIZE;
     private int nodeCount = 0;
     private int threshold;
-
+    private int modCount = 0;
     // private methods
 
     private int getHash(K key) {
@@ -168,9 +235,11 @@ public class HashTable<K, V> {
             table[index] = new Node<>(null, null, 0);
             table[index].addNode(key, val, hash);
             nodeCount++;
+            modCount++;
         } else {
             if (table[index].putNode(key, val, hash)) {
                 nodeCount++;
+                modCount++;
             }
         }
         if (nodeCount >= threshold) {
@@ -195,7 +264,7 @@ public class HashTable<K, V> {
         if (table[index] == null) {
             return null;
         }
-        return table[index].getValue(key, hash);
+        return table[index].getNode(key, hash);
     }
 
     /**
@@ -233,6 +302,7 @@ public class HashTable<K, V> {
         }
         if (table[index].removeNode(key, hash)) {
             nodeCount--;
+            modCount++;
         }
     }
 
