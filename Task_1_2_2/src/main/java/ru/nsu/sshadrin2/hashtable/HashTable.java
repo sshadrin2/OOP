@@ -1,7 +1,6 @@
 package ru.nsu.sshadrin2.hashtable;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 /**
  * Hash table that allows various operations with key/value mappings with constant time.
@@ -261,5 +260,28 @@ public class HashTable<K, V> {
             }
         }
         return hash;
+    }
+
+    @Override
+    public String toString() {
+        if (nodeCount == 0) {
+            return "{}";
+        }
+        StringBuilder res = new StringBuilder("{");
+        for (Node<K, V> head : table) {
+            if (head == null) {
+                continue;
+            }
+            for (Node<K, V> iter = head.next; iter != null; iter = iter.next) {
+                res.append(iter.key);
+                res.append('=');
+                res.append(iter.value);
+                res.append(", ");
+            }
+        }
+        res.setLength(res.length() - 2);
+        res.append('}');
+
+        return res.toString();
     }
 }

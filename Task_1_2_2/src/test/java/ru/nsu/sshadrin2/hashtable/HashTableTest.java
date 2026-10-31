@@ -215,4 +215,31 @@ class HashTableTest {
             assertHashCodeAndEq(tableA, tableB);
         }
     }
+
+    @Nested
+    class toString {
+        HashTable<String, Integer> table;
+
+        @BeforeEach
+        void setUp() {
+            table = new HashTable<>();
+        }
+
+        @Test
+        void emptyTable() {
+            assertEquals("{}", table.toString());
+        }
+
+        @Test
+        void smallTable() {
+            String[] strings = {"a", "aga", "bibi", "waaaaaa", "uhh"};
+            for (int i = 0; i < strings.length; i++) {
+                table.put(strings[i], i);
+            }
+            String string = table.toString();
+            for (int i = 0; i < strings.length; i++) {
+                assertTrue(string.contains(strings[i] + '=' + i));
+            }
+        }
+    }
 }
