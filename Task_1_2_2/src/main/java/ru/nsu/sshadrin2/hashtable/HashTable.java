@@ -326,12 +326,13 @@ public class HashTable<K, V> implements Iterable<Map.Entry<K, V>> {
     @Override
     @SuppressWarnings("unchecked")
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
+        if (this == o) {
+            return true;
+        }
+
 
         HashTable<K, V> t = (HashTable<K, V>) o;
         if (nodeCount != t.nodeCount) {
