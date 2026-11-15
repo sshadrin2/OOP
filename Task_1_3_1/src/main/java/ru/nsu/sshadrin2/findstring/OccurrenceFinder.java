@@ -8,6 +8,11 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Class for finding a substring in a file.
+ * Uses KMP algorithm.
+ */
 public class OccurrenceFinder {
     private static final int READ_BUFFER_SIZE = 8192;
 
