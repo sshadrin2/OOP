@@ -2,7 +2,6 @@ package ru.nsu.sshadrin2.findstring;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

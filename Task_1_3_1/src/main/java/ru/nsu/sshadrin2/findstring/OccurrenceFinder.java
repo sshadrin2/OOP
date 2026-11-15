@@ -10,7 +10,7 @@ import java.util.List;
 
 
 /**
- * Class for finding a substring in a file.
+ * Class for finding substring occurrences in a file.
  * Uses KMP algorithm.
  */
 public class OccurrenceFinder {
