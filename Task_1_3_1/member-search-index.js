@@ -1,0 +1,1 @@
+memberSearchIndex = [{"p":"ru.nsu.sshadrin2.findstring","c":"OccurrenceFinder","l":"find(String, String)","u":"find(java.lang.String,java.lang.String)","k":"6"},{"p":"ru.nsu.sshadrin2.findstring","c":"OccurrenceFinder","l":"OccurrenceFinder()","u":"%3Cinit%3E()","k":"3"}];updateSearchResults();
