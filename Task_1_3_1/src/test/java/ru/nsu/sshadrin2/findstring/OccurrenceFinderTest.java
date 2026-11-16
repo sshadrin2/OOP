@@ -41,7 +41,7 @@ class OccurrenceFinderTest {
         void mixedAlphabets() throws IOException {
             String file = write("абракадабраαβγδγδשלוםשלוםمرحبامرحبا你好你好");
 
-            assertEquals(List.of(1, 8),   OccurrenceFinder.find(file, "бра"));
+            assertEquals(List.of(1, 8), OccurrenceFinder.find(file, "бра"));
             assertEquals(List.of(13, 15), OccurrenceFinder.find(file, "γδ"));
             assertEquals(List.of(17, 21), OccurrenceFinder.find(file, "שלום"));
             assertEquals(List.of(25, 30), OccurrenceFinder.find(file, "مرحبا"));
@@ -108,7 +108,8 @@ class OccurrenceFinderTest {
             int targetChars = 1_000_000;
 
             List<Integer> expected = new ArrayList<>();
-            Path file = generateLargeFile(tempDir, targetChars, pattern, filler, 500,122L, expected);
+            Path file = generateLargeFile(tempDir, targetChars, pattern, filler,
+                    500, 122L, expected);
 
             assertEquals(expected, OccurrenceFinder.find(file.toString(), pattern));
         }
@@ -121,7 +122,8 @@ class OccurrenceFinderTest {
             int targetChars = 1_000_000_000;
 
             List<Integer> expected = new ArrayList<>();
-            Path file = generateLargeFile(tempDir, targetChars, pattern, filler, 50000000, 122L, expected);
+            Path file = generateLargeFile(tempDir, targetChars, pattern, filler,
+                    50000000, 122L, expected);
 
             assertEquals(expected, OccurrenceFinder.find(file.toString(), pattern, (1 << 24)));
         }
