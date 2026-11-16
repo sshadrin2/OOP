@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -77,7 +78,8 @@ class OccurrenceFinderTest {
     public class BigTests {
         private static Path generateLargeFile(
                 Path dir, int charsLen, String pattern,
-                String fillerAlphabet, long seed,
+                String fillerAlphabet,
+                int stride, long seed,
                 List<Integer> expectedIndices) throws IOException {
 
             Path file = dir.resolve("large.txt");
@@ -85,7 +87,7 @@ class OccurrenceFinderTest {
             try (BufferedWriter w = Files.newBufferedWriter(file, StandardCharsets.UTF_8)) {
                 int pos = 0;
                 while (pos < charsLen) {
-                    int fillerLen = 500 + rnd.nextInt(1000);
+                    int fillerLen = stride + rnd.nextInt(2 * stride);
                     for (int i = 0; i < fillerLen && pos < charsLen; i++, pos++) {
                         w.write(fillerAlphabet.charAt(rnd.nextInt(fillerAlphabet.length())));
                     }
@@ -106,9 +108,22 @@ class OccurrenceFinderTest {
             int targetChars = 1_000_000;
 
             List<Integer> expected = new ArrayList<>();
-            Path file = generateLargeFile(tempDir, targetChars, pattern, filler, 122L, expected);
+            Path file = generateLargeFile(tempDir, targetChars, pattern, filler, 500,122L, expected);
 
             assertEquals(expected, OccurrenceFinder.find(file.toString(), pattern));
+        }
+
+        @Tag("slow")
+        @Test
+        void largerThenRam() throws IOException {
+            String pattern = "абракадабра";
+            String filler = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            int targetChars = 1_000_000_000;
+
+            List<Integer> expected = new ArrayList<>();
+            Path file = generateLargeFile(tempDir, targetChars, pattern, filler, 50000000, 122L, expected);
+
+            assertEquals(expected, OccurrenceFinder.find(file.toString(), pattern, (1 << 24)));
         }
     }
 }

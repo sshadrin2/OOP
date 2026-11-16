@@ -25,3 +25,9 @@ jacocoTestReport {
         xml.required = true
     }
 }
+
+tasks.register('slowTest', Test) {
+    useJUnitPlatform { includeTags 'slow' }
+    maxHeapSize = '128m'
+    forkEvery = 1
+}

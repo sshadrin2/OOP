@@ -2,6 +2,7 @@ package ru.nsu.sshadrin2.findstring;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,35 +17,51 @@ import java.util.List;
 public class OccurrenceFinder {
     private static final int READ_BUFFER_SIZE = 8192;
 
+
+    /**
+     * Finds all occurences of a substring in a file.
+     * Uses READ_BUFFER_SIZE as BufferedReader buffer size
+     *
+     * @param path path to a file
+     * @param substring substring which occurrences has to be found
+     * @return list of all substring occurrences indices in a file
+     */
+    public static List<Integer> find(String path, String substring) {
+        return find(path, substring, READ_BUFFER_SIZE);
+    }
+
     /**
      * Finds all occurrences of a substring in a file.
      *
      * @param path      path to a file
      * @param substring substring which occurrences has to be found
+     * @param bufSize size of a BufferedReader buffer
      * @return list of all substring occurrences indices in a file
      */
-    public static List<Integer> find(String path, String substring) {
+    public static List<Integer> find(String path, String substring, int bufSize) {
         if (substring == null || substring.isEmpty()) {
             return new ArrayList<>();
         }
 
-        try (BufferedReader reader = Files.newBufferedReader(
-                Path.of(path), StandardCharsets.UTF_8)) {
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(
+                        Files.newInputStream(Path.of(path)),
+                        StandardCharsets.UTF_8),
+                bufSize)) {
 
             List<Integer> list = new ArrayList<>();
             char[] pattern = substring.toCharArray();
             int m = pattern.length;
             int[] lps = buildLps(pattern);
 
-            int matched = 0;          // текущее количество совпавших символов
-            int index = 0;            // индекс текущего символа в файле
-            char[] buffer = new char[READ_BUFFER_SIZE];
+            int matched = 0;
+            int index = 0;
+            char[] buffer = new char[bufSize];
             int read;
 
             while ((read = reader.read(buffer)) != -1) {
                 for (int i = 0; i < read; i++) {
                     char c = buffer[i];
-
                     while (matched > 0 && c != pattern[matched]) {
                         matched = lps[matched - 1];
                     }
@@ -60,7 +77,7 @@ public class OccurrenceFinder {
             }
             return list;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new FindException("Failed to read file: " + path, e);
         }
     }
 
@@ -85,5 +102,14 @@ public class OccurrenceFinder {
             }
         }
         return lps;
+    }
+
+    /**
+     * File not found exception.
+     */
+    public static class FindException extends RuntimeException {
+        public FindException(String message, Throwable cause) {
+            super(message, cause);
+        }
     }
 }
